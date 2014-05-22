@@ -1,0 +1,155 @@
+%% LyX 2.0.6 created this file.  For more info, see http://www.lyx.org/.
+%% Do not edit unless you really know what you are doing.
+\documentclass[english]{article}
+\usepackage[T1]{fontenc}
+\usepackage[latin9]{inputenc}
+\usepackage{geometry}
+\geometry{verbose,tmargin=2.5cm,bmargin=3cm,lmargin=2.5cm,rmargin=2.5cm,headheight=2.5cm,headsep=2.5cm,footskip=2.5cm}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{esint}
+\PassOptionsToPackage{normalem}{ulem}
+\usepackage{ulem}
+
+\makeatletter
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% LyX specific LaTeX commands.
+%% Because html converters don't know tabularnewline
+\providecommand{\tabularnewline}{\\}
+%% A simple dot to overcome graphicx limitations
+\newcommand{\lyxdot}{.}
+
+
+\makeatother
+
+\usepackage{babel}
+\begin{document}
+
+\title{Ph20 Assignment \#2}
+
+
+\author{Peter Lommen, TA: Jason Pollack}
+
+
+\date{April 16th, 2014}
+
+\maketitle
+
+\section{Simpson's Approximation}
+
+
+\subsection{Derivation of the extended Simpson's approximation}
+
+We begin with Simpson's formula for a single interval $H=b-a$:
+\[
+I\simeq I_{simp}\equiv\dfrac{H}{2}\left(\dfrac{f(a)}{3}+\dfrac{4f(c)}{3}+\dfrac{f(b)}{3}\right).
+\]
+where $c=\dfrac{a+b}{2}$. We apply the same principles as in the
+Trapezoid example: we divide $H$ by $N$ rather than 2 to get $h_{N}=\dfrac{b-a}{N}$.
+Now we sum these smaller Simpson's approximations up, and see if anything
+simplfies out:
+\begin{eqnarray*}
+\intop_{a}^{b}f(x)dx & = & \intop_{x_{0}}^{x_{2}}f(x)dx+\intop_{x_{2}}^{x_{4}}f(x)dx+\cdots+\intop_{x_{N-2}}^{x_{N}}f(x)dx\\
+ & \simeq & h_{N}\left(\dfrac{f(x_{0})}{3}+\dfrac{4f(x_{1})}{3}+\dfrac{f(x_{2})}{3}\right)+h_{N}\left(\dfrac{f(x_{2})}{3}+\dfrac{4f(x_{3})}{3}+\dfrac{f(x_{4})}{3}\right)\\
++ & \cdots & +h_{N}\left(\dfrac{f(x_{N-2})}{3}+\dfrac{4f(x_{N-1})}{3}+\dfrac{f(x_{N})}{3}\right)
+\end{eqnarray*}
+Adding similar $f(x)$ terms together and simplifying, our final result
+is thus:
+\[
+\intop_{a}^{b}f(x)dx\simeq h_{N}\left(\dfrac{1}{3}f(x_{0})+\dfrac{4}{3}f(x_{1})+\dfrac{2}{3}f(x_{2})+\dfrac{4}{3}f(x_{3})+\cdots+\dfrac{2}{3}f(x_{N-2})+\dfrac{4}{3}f(x_{N-1})+\dfrac{1}{3}f(x_{N})\right).
+\]
+
+
+
+\subsection{Local and Global Order of Simpson's Approximation}
+
+We begin with the Taylor expansion of $f(x)$:
+\[
+f(x)=f(a)+f'(a)H+f''(a)\dfrac{H^{2}}{2}+f'''(a)\dfrac{H^{3}}{6}+f^{4}(\eta)\dfrac{H^{4}}{4!}
+\]
+As in the example with the Trapezoidal method, elementary integration
+of this function yields
+\[
+I=f(a)H+f'(a)\dfrac{H^{2}}{2}+f''(a)\dfrac{H^{3}}{6}+f'''(a)\dfrac{H^{4}}{4!}+f^{4}(\eta)\dfrac{H^{5}}{5!}.
+\]
+We now use the Taylor expansion of $f(x)$ to rewrite Simpson's approximation:
+
+\begin{eqnarray*}
+I_{simp} & = & H\left(\dfrac{f(a)}{6}+\dfrac{4f(c)}{6}+\dfrac{f(b)}{6}\right)\\
+ & = & H\left(\dfrac{f(a)}{6}+\dfrac{4}{6}\left(f(a)+f'(a)\dfrac{H}{2}+f''(a)\dfrac{H^{2}}{8}+f'''(a)\dfrac{H^{3}}{8\cdot6}+f^{4}(\eta)\dfrac{H^{4}}{16\cdot4!}\right)\right)\\
+ &  & +\dfrac{1}{6}H\left(f(a)+f'(a)H+f''(a)\dfrac{H^{2}}{2}+f'''(a)\dfrac{H^{3}}{6}+f^{4}(\eta)\dfrac{H^{4}}{4!}\right)\\
+ & = & f(a)H\left(\dfrac{1}{6}+\dfrac{4}{6}+\dfrac{1}{6}\right)+f'(a)H^{2}\left(\dfrac{1}{3}+\dfrac{1}{2}\right)+f''(a)H^{3}\left(\dfrac{1}{12}+\dfrac{1}{12}\right)\\
+ &  & +f'''(a)H^{4}\left(\dfrac{1}{72}+\dfrac{1}{36}\right)+f^{4}(\eta)H^{5}\left(\dfrac{1}{6\cdot4\cdot24}+\dfrac{1}{6\cdot24}\right)\\
+ & = & f(a)H+f'(a)\dfrac{H^{2}}{2}+f''(a)\dfrac{H^{3}}{6}+f'''(a)\dfrac{H^{4}}{24}+f^{4}(\eta)\dfrac{5H^{5}}{576}
+\end{eqnarray*}
+So if we subtract $I$ from $I_{simp}$, we get
+\[
+I_{simp}-I=f^{4}(\eta)H^{5}\left(\dfrac{5}{576}-\dfrac{1}{120}\right)=\dfrac{f^{4}(\eta)H^{5}}{2880}
+\]
+clearly showing that Simpson's approximation is of local order $O(H^{5})$.
+
+Now for global order: as with the Trapezoidal method, the global error
+is approximately the local error multiplied by $N$, if one replaces
+$H$ with $h_{N}=\dfrac{b-a}{N}$. This works because over each subinterval
+$[x_{i},x_{i+2}]$ the local error is again $\dfrac{f^{4}(\eta)h_{N}^{5}}{2880}$,
+and there are $N$ subintervals, so the total error is close to 
+\[
+\dfrac{f^{4}(\eta)h_{N}^{5}}{2880}N=\dfrac{f^{4}(\eta)}{2880}\left(\dfrac{b-a}{N}\right)^{5}N=f^{4}(\eta)\dfrac{b-a}{2880}h_{N}^{4}.
+\]
+Therefore, the \uline{global error} of the extended Simpson's approximation
+is of order $O(h_{N}^{5})$.
+
+
+\section{Convergence}
+
+\begin{center}
+\includegraphics[scale=0.5]{Converge.png}
+\par\end{center}
+
+Above is a plot of the log of the absolute value of the error of the
+$\mathtt{TrapInt}$ and $\mathtt{SimpInt}$ functions for varying
+values of $N$. The Simpson's approximation converges much faster
+than the Trapezoidal approximation, but around $N>1000$ becomes irregular;
+it is here where the accuracy of the approximation method becomes
+liable to roundoff errors; by default $\mathtt{Python}$ only keeps
+17 significant figures, so it is here where the error is around $10^{-15}$
+that roundoff errors become significant. The large spike in the error
+for both the Trapezoidal and the Simpson's approximation is also likely
+due to some bizarre roundoff error as well. These errors could possibly
+(?) be fixed by changing some value in my code to a $\mathtt{float64}$
+type.
+
+
+\section{Relative Accuracy}
+
+This wasn't a difficult function to write, but it's hard to analyze
+quantitatively, because the Simpson's approximation converges very
+quickly, and so you need to go for very small accuracy values to get
+any significant value for $2^{k}N_{0}$. 
+
+
+\section{Other methods of integration}
+
+The errors of the Quad and Romberg method for approximating $\int_{0}^{1}e^{x}dx$
+are compiled in the table below:
+
+\begin{center}
+\begin{tabular}{|c|c|c|c|}
+\hline 
+Method & Error Size & $N_{min}$ for Simpson's   & $N_{min}$ for Trapezoid\tabularnewline
+\hline 
+\hline 
+Quad & $2.220446049250313\times10^{-16}$ & beyond point of rounding error & beyond point of rounding error\tabularnewline
+\hline 
+Romberg & $3.3084646133829665\times10^{-14}$ & 750 & $10^{9}$\tabularnewline
+\hline 
+\end{tabular}
+\par\end{center}
+
+To reach the equivalent level of accuracy specified by the quad method
+is actually impossible for the given approximation method (without
+the fixes mentioned above). To approximate the Romberg method requires
+subintervals of around 750 for the Simpson's method, and around $10^{9}$
+for the Trapezoidal method (once again, we see that Simpson's approximation
+is $way$ better than the Trapezoidal method). 
+\end{document}
